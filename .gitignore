@@ -1,0 +1,16 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtualenv
+.venv/
+
+# Environment variables
+.env
+
+# Test artifacts
+.coverage
+.pytest_cache/
+htmlcov/

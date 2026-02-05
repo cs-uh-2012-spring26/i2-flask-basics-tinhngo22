@@ -155,3 +155,46 @@ class Student(Resource):
             return {MSG: "Student not found"}, HTTPStatus.NOT_FOUND
 
         return {MSG: "Student updated"}, HTTPStatus.OK
+    
+    @api.response(
+        HTTPStatus.OK,
+        "Success",
+        api.model(
+            "Delete Student",
+            {MSG: fields.String("Student deleted with email: XXXXXXXXXXXXXXXXXXXXXXXX")},
+        ),
+    )
+    @api.response(
+        HTTPStatus.NOT_FOUND,
+        "Invalid Request",
+        api.model(
+            "Delete Student: Bad Request",
+            {MSG: fields.String("Student not found")},
+        ),
+    )
+    @api.response(
+        HTTPStatus.NOT_ACCEPTABLE,
+        "Invalid Request",
+        api.model(
+            "Delete Student: Bad Request",
+            {MSG: fields.String("Invalid value provided for email")},
+        ),
+    )
+    def delete(self,email):
+        if not (
+            isinstance(email, str)
+            and len(email) > 0
+        ):
+            return {
+                MSG: "Invalid value provided for email"
+            }, HTTPStatus.NOT_ACCEPTABLE
+        student_resource = StudentResource()
+        student = student_resource.get_student_by_email(email)
+
+        if not (student):
+            return {
+                MSG: "Student not found"
+            }, HTTPStatus.NOT_FOUND
+
+        student_resource.delete_student_by_email(email)
+        return {MSG: f"Student deleted with email: {email}"}, HTTPStatus.OK

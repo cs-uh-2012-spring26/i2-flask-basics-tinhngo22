@@ -48,6 +48,10 @@ class StudentResource:
     def delete_all_students(self):
         self.collection.delete_many({})
 
+    def delete_student_by_email(self,email:str):
+        self.collection.delete_one({EMAIL: email})
+        return self.collection
+
     def add_multiple_students(self, students: list[dict]):
         if not students:
             return
